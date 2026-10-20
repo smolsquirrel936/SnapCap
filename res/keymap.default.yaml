@@ -1,0 +1,42 @@
+# SnapCap default key bindings — mirrors Features.md §4.
+# Sequences use a portable form: "Ctrl+Shift+S", "F1", "Shift+F3".
+# These are the built-in defaults; user overrides are stored in config.ini as
+# hotkey/<action>. Editing this file changes the defaults (no recompile).
+#
+# Groups map to KeyContext: global / snip / pin / edit. Only the global context
+# is wired in Stage 1; the others are populated in their stages.
+
+global:
+  snip: "F1"
+  snipCopy: "Ctrl+F1"
+  customSnip: "Shift+F1"
+  snipActiveWindow: ""    # unbound by default (see Features.md §5)
+  # quickSnip is not a keymap entry: its trigger lives in snip/quickSnip/trigger
+  # (a full hotkey OR a hold-modifier + drag gesture) — see Features.md (Quick snip).
+  paste: "F3"
+  hideAll: "Shift+F3"
+  clickThrough: ""        # unbound by default (see Features.md §3)
+  pickColor: ""           # unbound by default — standalone loupe colour picker
+  scanBarcode: ""         # unbound by default — snip a region, decode + copy its barcode/QR
+
+# Snip-overlay keys. NOTE: the overlay's key handling is still hardcoded in
+# SnipOverlay::onKey — these entries currently drive the on-overlay key-binding
+# *tips* panel (snip/display/keyTips) labels, not the dispatch. Multi-key clusters
+# (W/A/S/D cursor-move, arrow resize) ca1n't be a single sequence and stay static.
+snip:
+  snip_copy: "Ctrl+C"
+  snip_save: "Ctrl+S"
+  snip_quicksave: "Ctrl+Shift+S"
+  snip_pin: "Ctrl+T"
+  snip_toggleDetect: "Tab"
+  snip_fullscreen: "Ctrl+A"
+  snip_repeatLast: "R"
+  snip_histPrev: ","
+  snip_histNext: "."
+  snip_toggleCursor: "`"
+  snip_refresh: "F5"
+
+edit:
+  edit_undo: "Ctrl+Z"
+  edit_redo: "Ctrl+Y"
+  edit_clearAll: "Ctrl+Shift+Z"

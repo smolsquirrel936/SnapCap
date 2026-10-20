@@ -1,0 +1,67 @@
+# ---------------------------------------------------------------------------
+# SnapCap — .gitignore
+#
+# This repository tracks SOURCE ONLY. Everything a build produces, every
+# prebuilt dependency, and every local development note is ignored, so a clone
+# stays small and is reproducible from source alone (README.md → Building from
+# source).
+# ---------------------------------------------------------------------------
+
+# --- Build output ----------------------------------------------------------
+# The whole CMake build tree, including the CPack staging area and the release
+# ZIP. Reproducible with: cmake --build build --target package
+/build/
+/out/
+*.user
+
+# One-off superbuild tree for the Tesseract/Leptonica dependency
+# (tools/build_tesseract.ps1).
+/build-tess/
+
+# --- Prebuilt dependencies -------------------------------------------------
+# Where tools/build_tesseract.ps1 installs Tesseract + Leptonica. These are
+# compiler-specific (MinGW) static libraries, so each developer builds their
+# own rather than sharing them through the repo.
+/third_party/
+
+# --- CMake -----------------------------------------------------------------
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CTestTestfile.cmake
+compile_commands.json
+
+# --- Runtime artifacts -----------------------------------------------------
+# The portable app writes these next to the exe; they must never be committed.
+config.ini
+config.path
+splog.txt
+/history/
+/session/
+/tessdata/
+
+# --- Local development notes (not part of the product) ---------------------
+/manual-request/
+/memory/
+.claude/
+
+# --- Python (tools/i18n_check.py) ------------------------------------------
+/.venv/
+__pycache__/
+*.pyc
+
+# --- vcpkg -----------------------------------------------------------------
+/vcpkg_installed/
+
+# --- IDE / editor ----------------------------------------------------------
+.vs/
+.vscode/
+.idea/
+
+# --- OS --------------------------------------------------------------------
+Thumbs.db
+.DS_Store
+
+# Debug output from tst_annotation_golden: the produced image is written
+# beside its golden on a mismatch, purely so the two can be diffed by eye.
+test/golden/*_actual.png

@@ -1,0 +1,294 @@
+/* SnapCap Preferences dialog theme — flat "settings page" look.
+ * Scoped to #PreferencesDialog so it cascades only to this dialog's widgets,
+ * not the whole app. Loaded at runtime from <exe-dir>/res/preferences.qss;
+ * missing file = no-op.
+ *
+ * Colours are named tokens, not literals: PrefsStyle::load() resolves them against the
+ * palette for the active scheme (interface/theme = auto | light | dark), so one set
+ * of rules serves both looks and they cannot drift apart. The @accent* tokens follow
+ * interface/themeColor. Token names and their per-scheme values live in
+ * ui/PrefsStyle.cpp — add a token there before using it here, or Qt will drop the
+ * declaration as invalid. */
+
+#PreferencesDialog {
+    background: @page;
+}
+
+/* --- branding header ----------------------------------------------------- */
+#PrefsHeader {
+    background: @card;
+    border-bottom: 1px solid @border;
+}
+#PrefsBrandName {
+    font-size: 15px;
+    font-weight: 700;
+    color: @text;
+}
+
+/* --- sidebar (categories) ------------------------------------------------ */
+#PrefsNavHeader {
+    font-size: 13px;
+    font-weight: 700;
+    color: @text;
+    padding: 2px 6px;
+}
+#PrefsSidebar, #PrefsSubcats {
+    background: transparent;
+    border: none;
+    outline: 0;
+}
+#PrefsSidebar::item, #PrefsSubcats::item {
+    color: @text-muted;
+    padding: 8px 10px;
+    border-radius: 6px;
+    margin: 1px 0;
+}
+#PrefsSidebar::item:hover, #PrefsSubcats::item:hover {
+    background: @hover;
+}
+#PrefsSidebar::item:selected, #PrefsSubcats::item:selected {
+    background: @accent-tint;
+    color: @accent-text;
+    font-weight: 600;
+}
+#PrefsSubcats::item {
+    color: @text-secondary;
+    padding: 6px 10px;
+}
+
+/* --- content area -------------------------------------------------------- */
+/* The scroll viewport is painted the panel colour (not transparent) so it fills
+ * the whole right panel top-to-bottom, even below a short page whose content
+ * stack is shorter than the viewport. */
+#PrefsContent, #PrefsViewport {
+    background: @page;
+    border: none;
+}
+#PageTitle {
+    font-size: 18px;
+    font-weight: 700;
+    color: @text;
+}
+#PageSubtitle {
+    font-size: 12px;
+    color: @text-secondary;
+}
+/* subcategory heading rendered inline on the page (not a nav item) */
+#SectionTitle {
+    font-size: 14px;
+    font-weight: 700;
+    color: @text;
+    margin-top: 6px;
+}
+#SectionDesc {
+    font-size: 12px;
+    color: @text-secondary;
+}
+
+/* --- cards holding the setting rows -------------------------------------- */
+QFrame[card="true"] {
+    background: @card;
+    border: 1px solid @border;
+    border-radius: 10px;
+}
+
+/* --- a single setting row ------------------------------------------------ */
+#SettingLabel {
+    font-size: 13px;
+    font-weight: 600;
+    color: @text-label;
+}
+#SettingDesc {
+    font-size: 12px;
+    color: @text-secondary;
+}
+/* Description-sized text that carries primary emphasis (the quick-snip "+" and its
+ * drag hint). Was an inline `color:` literal on those two labels, which could not
+ * follow the scheme. */
+#SettingDescStrong {
+    font-size: 12px;
+    color: @text;
+}
+#RowDivider {
+    background: @divider;
+    max-height: 1px;
+    min-height: 1px;
+    border: none;
+}
+
+/* --- input controls ------------------------------------------------------ */
+/* QSpinBox is deliberately excluded here so it keeps Qt's native spin-box
+ * rendering (boxed up/down arrows) — matching ColorDialog's unstyled HSV/RGB
+ * fields instead of getting the flat rounded-border theme. */
+QLineEdit, QComboBox, QKeySequenceEdit {
+    background: @card;
+    border: 1px solid @border-input;
+    border-radius: 6px;
+    padding: 5px 8px;
+    color: @text;
+    selection-background-color: @accent;
+    selection-color: @on-accent;
+}
+QLineEdit:focus, QComboBox:focus, QKeySequenceEdit:focus {
+    border: 1px solid @accent;
+}
+QLineEdit:read-only {
+    background: @subtle;
+    color: @text-muted;
+}
+QLineEdit:disabled, QComboBox:disabled {
+    background: @disabled-bg;
+    color: @text-disabled;
+}
+QComboBox::drop-down {
+    border: none;
+    width: 18px;
+}
+QComboBox QAbstractItemView {
+    background: @card;
+    border: 1px solid @border-input;
+    border-radius: 6px;
+    selection-background-color: @accent-tint;
+    selection-color: @accent-text;
+    outline: 0;
+}
+
+/* --- checkboxes ---------------------------------------------------------- */
+QCheckBox {
+    color: @text-label;
+    spacing: 8px;
+}
+QCheckBox:disabled {
+    color: @text-disabled;
+}
+QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+    border: 1px solid @border-input;
+    border-radius: 4px;
+    background: @card;
+}
+QCheckBox::indicator:hover {
+    border: 1px solid @accent;
+}
+QCheckBox::indicator:checked {
+    background: @accent;
+    border: 1px solid @accent;
+}
+QCheckBox::indicator:disabled {
+    background: @disabled-bg;
+    border: 1px solid @border;
+}
+
+/* --- radio buttons ------------------------------------------------------- */
+/* Styled for the same reason as the checkboxes above, and it is not cosmetic:
+ * a NATIVE indicator is drawn from the style's own cached brushes, which do not
+ * reliably follow an OS-driven light/dark switch — the checked radio kept its
+ * light-mode dot on a dark card. Drawing it from tokens makes it change with the
+ * rest of the stylesheet. Metrics mirror QCheckBox::indicator, with a full radius
+ * for the circle and the accent fill standing in for the classic centre dot. */
+QRadioButton {
+    color: @text-label;
+    spacing: 8px;
+}
+QRadioButton:disabled {
+    color: @text-disabled;
+}
+QRadioButton::indicator {
+    width: 16px;
+    height: 16px;
+    border: 1px solid @border-input;
+    border-radius: 9px;
+    background: @card;
+}
+QRadioButton::indicator:hover {
+    border: 1px solid @accent;
+}
+/* A donut: a thick accent ring with the card colour showing through the middle.
+ * It has to be a radial gradient rather than a fat border, because QSS grows the
+ * indicator OUTWARDS from its width/height — a 5px border would make the checked
+ * state larger than the unchecked one and shift the row. The gradient keeps the box
+ * a fixed size. Stops are paired tightly (0.42/0.46) because a gradient interpolates
+ * between them, and a wider gap renders as a blurry halo instead of a crisp edge. */
+QRadioButton::indicator:checked {
+    border: 1px solid @accent;
+    background: qradialgradient(cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5,
+                                stop:0 @card, stop:0.42 @card,
+                                stop:0.46 @accent, stop:1 @accent);
+}
+QRadioButton::indicator:disabled {
+    background: @disabled-bg;
+    border: 1px solid @border;
+}
+
+/* --- buttons ------------------------------------------------------------- */
+QPushButton {
+    background: @card;
+    border: 1px solid @border-input;
+    border-radius: 6px;
+    padding: 5px 12px;
+    color: @text-label;
+    font-weight: 600;
+}
+QPushButton:hover {
+    background: @subtle;
+}
+QPushButton:pressed {
+    background: @divider;
+}
+QPushButton#PrimaryButton {
+    background: @accent;
+    border: 1px solid @accent;
+    color: @on-accent;
+}
+QPushButton#PrimaryButton:hover {
+    background: @accent-hover;
+}
+
+/* --- hotkey conflict message --------------------------------------------- */
+#hotkeyConflict {
+    color: @danger;
+    font-size: 12px;
+}
+
+/* --- hotkey capture box -------------------------------------------------- */
+/* Centered read-only field; on focus the theme color paints an underline to
+ * signal "capturing now" (see ui/HotkeyEdit). */
+#HotkeyEdit {
+    background: @card;
+    border: 1px solid @border-input;
+    border-radius: 6px;
+    padding: 5px 8px;
+    color: @text;
+    selection-background-color: @accent;
+    selection-color: @on-accent;
+}
+#HotkeyEdit:focus {
+    border: 1px solid @border-input;
+    border-bottom: 2px solid @accent;
+}
+
+/* --- Key Bindings reference popup ---------------------------------------- */
+#KeyBindingsDialog {
+    background: @card;
+}
+#KeyBindingsDialog QTableWidget {
+    background: @card;
+    alternate-background-color: @page;
+    border: 1px solid @border;
+    border-radius: 8px;
+    color: @text-strong;
+    gridline-color: transparent;
+}
+#KeyBindingsDialog QTableWidget::item {
+    padding: 6px 10px;
+    color: @text-strong;
+}
+/* Hover highlight is a full-row hollow rectangle painted in code (see HoverTable
+ * in KeyBindingsDialog.cpp); QSS :hover would only outline the single cell. */
+
+/* --- scroll area --------------------------------------------------------- */
+QScrollArea {
+    border: none;
+    background: transparent;
+}
